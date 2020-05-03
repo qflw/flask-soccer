@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Rank{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Rank</h2>
+    <table>    
+        {% for user in users %}
+            <tr>
+                <td class="c1"><a href="{{ url_for('main.event', user_id=user.id) }}">{{ user.username }}</a></td>
+                <td class="c1">{{ user.get_points() }}</td>
+            </tr>
+        {% endfor %}
+    </table>     
+{% endblock %}

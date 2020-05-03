@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Event{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Event {{ event.competition.name }}</h2>
+        <table>
+        <tr>
+            <th scope="col">icon</th>
+            <th scope="col">home</th>
+            <th scope="col"></th>
+            <th scope="col">away</th>
+            <th scope="col">date</th>
+            <th scope="col">result</th>
+            {% if g.user or display_user %}
+            <th scope="col">bet</th>
+            <th scope="col">points</th>
+            {% endif %}
+        </tr>
+        {% for match in event.matches %}
+        <tr>
+            <td class="c1"><IMG src="favicon.ico"></td>
+            <td class="c2">{{ match.homeTeam.name }}</td>
+            <td class="c2">-</td>
+            <td class="c3">{{ match.awayTeam.name }}</td>
+            <td class="c3">{{ match.utcDate }}</td>
+            {% if g.user and g.user.has_write_permission() %}
+                <td class="c3"><input type="text" maxlength="5" value="{{ match.score.fullTime.homeTeam }}:{{match.score.fullTime.awayTeam}}" onchange="submitScore(this)" id="{{ match.id }}" name="result"/></td>
+            {% else %}
+                <td class="c3">{{ match.score.fullTime.homeTeam }}:{{match.score.fullTime.awayTeam}}</td>
+            {% endif %}
+
+            {% if g.user %}
+                <td class="c3"><input type="text" maxlength="5" value="0" onchange="submitScore(this)" id="{{ match.id }}" name="bet"/></td>
+                <td class="c3">0</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </table>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+.vscode
+__pycache__
+venv
+soccer/test.db
+tests/*.db
+.cache/*
+config.env
+.coverage

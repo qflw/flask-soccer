@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Event{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Event {{ event.name }}</h2>    
+    {% if display_user %}
+         <h1>showing {{ display_user.username }}</h1>   
+    {% endif %}
+
+    {% for group in event.groups %}
+        <h1>{{ group.name }}</h1>
+        <table>
+        <tr>
+            <th scope="col">icon</th>
+            <th scope="col">home</th>
+            <th scope="col"></th>
+            <th scope="col">away</th>
+            <th scope="col">date</th>
+            <th scope="col">result</th>
+            {% if g.user or display_user %}
+            <th scope="col">bet</th>
+            <th scope="col">points</th>
+            {% endif %}
+        </tr>
+        {% for match in group.matches %}
+        <tr>
+            <td class="c1"><IMG src="favicon.ico"></td>
+            <td class="c2">{{ match.home.name }}</td>
+            <td class="c2">-</td>
+            <td class="c3">{{ match.away.name }}</td>
+            <td class="c3">{{ match.datetime }}</td>
+            {% if g.user and g.user.has_write_permission() %}
+                <td class="c3"><input type="text" maxlength="5" value="{{ match.result }}" onchange="submitScore(this)" id="{{ match.id }}" name="result"/></td>
+            {% else %}
+                <td class="c3">{{ match.result }}</td>
+            {% endif %}
+
+            {% if g.user and ((display_user == g.user) or (display_user == None)) %}
+                <td class="c3"><input type="text" maxlength="5" value="{{ match.get_bet_for_user(g.user).bet }}" onchange="submitScore(this)" id="{{ match.id }}" name="bet"/></td>
+                <td class="c3">{{ g.user.get_points_for_match(match) }} </td>
+            {% elif display_user %}
+                <td class="c3">{{ match.get_bet_for_user(display_user).bet }}</td>
+                <td class="c3">{{ display_user.get_points_for_match(match) }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}   
+{% endblock %}
