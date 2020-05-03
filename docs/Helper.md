@@ -58,5 +58,5 @@ $ flask init-db
 ```
 
 # qeury matches for European Championship
-curl -H "X-Auth-Token: 03e78b6da9344b42a295baf7b13a0035" http://api.football-data.org/v2/competitions/2018/matches
+curl -H "X-Auth-Token: 2a295baf7b13a0023547111" http://api.football-data.org/v2/competitions/2018/matches
 flask parse-json docs/2018_matches.json
