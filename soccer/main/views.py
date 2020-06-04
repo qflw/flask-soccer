@@ -77,24 +77,6 @@ def matches():
     return render_template('matches.html', event=g.event_data)
 
 
-@main.route('/rank')
-def rank():
-    '''
-    display the ranking of users
-    '''
-    users = User.query.all()
-
-    def sort_by_points(elem):
-        return elem.get_points()
-
-    users.sort(reverse=True, key=sort_by_points)
-
-    if users:
-        return render_template('rank.html', users=users)
-
-    abort(500)
-
-
 @main.route('/action/<command>', methods=['GET'])
 def action(command):
     '''
@@ -176,9 +158,12 @@ def login():
             return redirect(url_for('main.event'))
         else:
             error = 'Invalid username/password'
+
+    if error:
+        flash(error)
     # the code below is executed if the request method
     # was GET or the credentials were invalid
-    return render_template('login.html', error=error)
+    return render_template('login.html')
 
 
 @main.route('/logout', methods=['POST', 'GET'])

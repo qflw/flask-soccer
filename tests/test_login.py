@@ -19,6 +19,7 @@ class LoginTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_login_user(self):
+        ''' test invalid login '''
         Role.insert_roles()
         User.insert_users()
         response = self.client.get(url_for('main.login'))
@@ -27,8 +28,16 @@ class LoginTestCase(unittest.TestCase):
         response = self.client.post("/login", data={"username": "username",
                                                     "password": "password"})
         self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Invalid username/password", response.data)
         self.client.get("/")
         self.assertIsNone(g.user)
+
+    def test_login_user_valid(self):
+        ''' test valid login '''
+        Role.insert_roles()
+        User.insert_users()
+        response = self.client.get(url_for('main.login'))
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.post("/login", data={"username": "user1",
                                                     "password": "pass"})
