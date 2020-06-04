@@ -66,7 +66,8 @@ def event():
                                display_user=display_user,
                                ranked_users=users)
 
-    abort(500)
+    flash("No event was found")
+    return render_template('event.html')
 
 
 @main.route('/matches')

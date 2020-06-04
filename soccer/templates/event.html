@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Event {{ event.name }}</h2>    
+    {% if event %}
+    <h2>Event {{ event.name }}</h2>
+    {% endif %}
     {% if display_user %}
          <h1>showing {{ display_user.username }}</h1>   
     {% endif %}
@@ -28,6 +30,7 @@
 
     <td valign="top">
     <table  style="display:inline-block;">
+    {% if event %}
     {% for group in event.groups %}
         <tr><td>{{ group.name}}</td> </tr>
         <tr>
@@ -65,6 +68,7 @@
         </tr>
         {% endfor %}
     {% endfor %}
+    {% endif %}
     </table>
     </td>
     </table>

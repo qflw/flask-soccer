@@ -40,6 +40,7 @@ class LoginTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         response = self.client.post("/login", data={"username": "user1",
-                                                    "password": "pass"})
-        self.client.get("/")
+                                                    "password": "pass"},
+                                    follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(g.user)
