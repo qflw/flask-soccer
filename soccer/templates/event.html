@@ -10,9 +10,26 @@
          <h1>showing {{ display_user.username }}</h1>   
     {% endif %}
 
+    <table>
+    <td valign="top">
+    <table>
+        <tr>
+            <th>name</th>
+            <th>points</th>
+        </tr>
+        {% for user in ranked_users %}
+            <tr>
+                <td class="c1"><a href="{{ url_for('main.event', user_id=user.id) }}">{{ user.username }}</a></td>
+                <td class="c1">{{ user.get_points() }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </td>
+
+    <td valign="top">
+    <table  style="display:inline-block;">
     {% for group in event.groups %}
-        <h1>{{ group.name }}</h1>
-        <table>
+        <tr><td>{{ group.name}}</td> </tr>
         <tr>
             <th scope="col">icon</th>
             <th scope="col">home</th>
@@ -47,6 +64,8 @@
             {% endif %}
         </tr>
         {% endfor %}
-        </table>
-    {% endfor %}   
+    {% endfor %}
+    </table>
+    </td>
+    </table>
 {% endblock %}

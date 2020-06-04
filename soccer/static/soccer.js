@@ -43,9 +43,9 @@ function submitScoreInternal(text, parastr, elem)
 
 		data = "";
 		if (elem.name == "bet") {
-			data = "match=" + parastr + "&bet=" + text;
+			data = "match_id=" + parastr + "&bet=" + text;
 		} else {
-			data = "match=" + parastr + "&result=" + text;
+			data = "match_id=" + parastr + "&result=" + text;
 		}
 /*		params = parastr.split('_');
 		for (i = 0; i < params.length; i++) {

@@ -47,15 +47,24 @@ def event():
         return "Hello, World %s" % escape(session['username'])
     '''
 
+    users = User.query.all()
+
+    def sort_by_points(elem):
+        return elem.get_points()
+
+    users.sort(reverse=True, key=sort_by_points)
+
     display_user = None
     user_id = request.args.get('user_id')
     if user_id:
         display_user = User.query.filter_by(id=user_id).first()
 
-    event = Event.query.first()
+    event = Event.query.filter_by(id=2018).first()
     if event:
         return render_template('event.html',
-                               event=event, display_user=display_user)
+                               event=event,
+                               display_user=display_user,
+                               ranked_users=users)
 
     abort(500)
 
@@ -117,9 +126,9 @@ def submitScore():
     if request.method == 'POST' and g.user:
         bet_string = request.form.get('bet')
         result_string = request.form.get('result')
-        match_id = request.form.get('match')
+        match_id = request.form.get('match_id')
 
-        if result_string:
+        if result_string and g.user.has_write_permission():
             match = Match.query.filter_by(id=match_id).first()
             match.result = result_string
             db.session.commit()

@@ -87,7 +87,7 @@ class User(db.Model):
 class Team(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True, nullable=False)
-    short_name = Column(String(3), unique=True, nullable=False)
+    short_name = Column(String(3), unique=False, nullable=False)
 
     def __repr__(self):
         return '<Team %r %r>' % (self.name, self.short_name)
@@ -203,10 +203,22 @@ def parse_json(input_file):
     """parse"""
     input = open(input_file)
     data = json.load(input)
+    competition = data['competition']
+    event = Event.query.filter_by(id=competition["id"]).first()
+    if not event:
+        event = Event(id=competition["id"], name=competition["name"])
+        db.session.add(event)
+
     matches = data["matches"]
     for match in matches:
         home = match["homeTeam"]
         away = match["awayTeam"]
+        group_name = match["group"]
+        group = Group.query.filter_by(name=group_name).first()
+        if not group:
+            group = Group(name=group_name, event=event)
+            db.session.add(group)
+
         if not Team.query.filter_by(id=home["id"]).first():
             name = home["name"]
             t1 = Team(id=home["id"], name=name, short_name=name[:3])
@@ -218,13 +230,22 @@ def parse_json(input_file):
             db.session.add(t1)
 
         m = Match.query.filter_by(id=match["id"]).first()
-        if m:
-            m.group_id = 1
-        else:
-            date = datetime.strptime(match["utcDate"], '%Y-%m-%dT%H:%M:%SZ')
+        date = datetime.strptime(match["utcDate"], '%Y-%m-%dT%H:%M:%SZ')
+        score = match["score"]
+        fullTimeScore = score["fullTime"]
+        if not m:
             m1 = Match(id=match["id"], home_id=home["id"],
-                       away_id=away["id"], datetime=date, group_id=1)
+                       away_id=away["id"], datetime=date, group=group)
+            if score["winner"]:
+                m1.result = "{}:{}".format(fullTimeScore["homeTeam"],
+                                           fullTimeScore["awayTeam"])
             db.session.add(m1)
+        else:
+            m.group = group
+            m.datetime = date
+            if score["winner"]:
+                m.result = "{}:{}".format(fullTimeScore["homeTeam"],
+                                          fullTimeScore["awayTeam"])
 
     db.session.commit()
     click.echo('parsing done')
