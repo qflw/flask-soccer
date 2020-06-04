@@ -38,7 +38,7 @@ class Config:
     if os.environ.get('AUTH_TOKEN'):
         AUTH_TOKEN = os.environ.get('AUTH_TOKEN')
     else:
-        AUTH_TOKEN = "AUTH_TOKEN not set"
+        AUTH_TOKEN = None
         print('AUTH_TOKEN not set')
 
     JSON_DATA_FILENAME = "soccer/assets/2018_matches.json"

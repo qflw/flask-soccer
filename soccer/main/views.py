@@ -103,6 +103,10 @@ def action(command):
     '''
     if command == "update":
         auth_token = current_app.config["AUTH_TOKEN"]
+        if not auth_token:
+            flash("auth token not set")
+            return redirect(url_for('main.matches'))
+
         headers = {"X-Auth-Token": auth_token}
         url = "http://api.football-data.org/v2/competitions/2018/matches"
         req = urllib.request.Request(url, None, headers)
