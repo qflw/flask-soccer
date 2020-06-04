@@ -19,6 +19,7 @@ class CommandTestCase(unittest.TestCase):
     def test_command_invalid(self):
         response = self.client.get('/action/invalid')
         self.assertEqual(response.status_code, 404)
+        self.assertIn(b"Unknown command given:", response.data)
 
     def test_command_update(self):
         response = self.client.get('/action/update', follow_redirects=True)

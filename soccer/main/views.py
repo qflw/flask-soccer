@@ -121,6 +121,7 @@ def action(command):
 
         return redirect(url_for('main.matches'))
 
+    flash("Unknown command given: {}".format(command))
     abort(404)
 
 
