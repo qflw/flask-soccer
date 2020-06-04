@@ -41,8 +41,6 @@ class Config:
         AUTH_TOKEN = "AUTH_TOKEN not set"
         print('AUTH_TOKEN not set')
 
-    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-
     JSON_DATA_FILENAME = "soccer/assets/2018_matches.json"
 
     '''
