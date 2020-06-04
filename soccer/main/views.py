@@ -104,7 +104,7 @@ def action(command):
     if command == "update":
         auth_token = current_app.config["AUTH_TOKEN"]
         if not auth_token:
-            flash("auth token not set")
+            flash("AUTH_TOKEN not set")
             return redirect(url_for('main.matches'))
 
         headers = {"X-Auth-Token": auth_token}

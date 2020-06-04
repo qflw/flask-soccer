@@ -1,7 +1,6 @@
 import unittest
 
 from soccer import create_app, db
-from soccer.model import User, Role, Permission
 
 
 class CommandTestCase(unittest.TestCase):
@@ -22,5 +21,6 @@ class CommandTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_command_update(self):
-        response = self.client.get('/action/update')
-        self.assertEqual(response.status_code, 302)
+        response = self.client.get('/action/update', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"AUTH_TOKEN not set", response.data)
