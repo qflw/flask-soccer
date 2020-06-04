@@ -6,3 +6,4 @@ tests/*.db
 .cache/*
 config.env
 .coverage
+*.egg-info
