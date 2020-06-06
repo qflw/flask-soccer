@@ -151,8 +151,8 @@ def submitScore():
 def login():
     error = None
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
         user = User.query.filter_by(username=username).first()
         if user and user.verify_password(password):
             session['user_id'] = user.id
@@ -176,9 +176,9 @@ def logout():
 @main.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
+        username = request.form.get('username')
+        password = request.form.get('password')
+        email = request.form.get('email')
 
         error = None
 

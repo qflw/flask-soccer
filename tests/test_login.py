@@ -18,15 +18,15 @@ class LoginTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
-    def test_login_user(self):
+    def test_login_user_invalid(self):
         ''' test invalid login '''
         Role.insert_roles()
         User.insert_users()
         response = self.client.get(url_for('main.login'))
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post("/login", data={"username": "username",
-                                                    "password": "password"})
+        response = self.client.post("/login", data={"username": "invalid",
+                                                    "password": "invalid"})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Invalid username/password", response.data)
         self.client.get("/")
@@ -44,3 +44,7 @@ class LoginTestCase(unittest.TestCase):
                                     follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(g.user)
+
+        ''' logout '''
+        self.client.get(url_for('main.logout'), follow_redirects=True)
+        self.assertIsNone(g.user)
