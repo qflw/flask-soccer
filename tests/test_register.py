@@ -47,3 +47,34 @@ class RegisterTestCase(unittest.TestCase):
         self.assertIn(b"Username is required.", response.data)
         self.client.get("/")
         self.assertIsNone(g.user)
+
+    def test_register_user_password_missing(self):
+        ''' test invalid register password missing '''
+        Role.insert_roles()
+        User.insert_users()
+        response = self.client.get(url_for('main.register'))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(url_for('main.register'),
+                                    data={"email": "invalid",
+                                          "username": "invalid"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Password is required.", response.data)
+        self.client.get("/")
+        self.assertIsNone(g.user)
+
+    def test_register_user_already_existing(self):
+        ''' test invalid register already exiting '''
+        Role.insert_roles()
+        User.insert_users()
+        response = self.client.get(url_for('main.register'))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(url_for('main.register'),
+                                    data={"password": "password",
+                                          "email": "invalid",
+                                          "username": "user1"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"User user1 is already registered.", response.data)
+        self.client.get("/")
+        self.assertIsNone(g.user)
