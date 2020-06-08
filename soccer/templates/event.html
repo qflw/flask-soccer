@@ -8,10 +8,6 @@
     {% if event %}
     <h2>Event {{ event.name }}</h2>
     {% endif %}
-    {% if display_user %}
-         <h1>showing {{ display_user.username }}</h1>   
-    {% endif %}
-
     <table>
     <td valign="top">
     <table>
@@ -21,8 +17,12 @@
         </tr>
         {% for user in ranked_users %}
             <tr>
-                <td class="c1"><a href="{{ url_for('main.event', user_id=user.id) }}">{{ user.username }}</a></td>
-                <td class="c1">{{ user.get_points() }}</td>
+                {% if display_user == user %}
+                <td><a style="text-decoration: underline;" href="{{ url_for('main.event', user_id=user.id) }}">{{ user.username }}</a></td>
+                {% else %}
+                <td><a style="text-decoration: none;" href="{{ url_for('main.event', user_id=user.id) }}">{{ user.username }}</a></td>
+                {% endif %}
+                <td>{{ user.get_points() }}</td>
             </tr>
         {% endfor %}
     </table>
