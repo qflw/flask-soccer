@@ -75,7 +75,13 @@ def matches():
     '''
     display matches loaded from the json file
     '''
-    return render_template('matches.html', event=g.event_data)
+    groups = {}
+    for match in g.event_data["matches"]:
+        if (groups.get(match["group"]) is None):
+            groups[match["group"]] = []
+        groups[match["group"]].append(match)
+
+    return render_template('matches.html', event=g.event_data, groups=groups)
 
 
 @main.route('/action/<command>', methods=['GET'])
