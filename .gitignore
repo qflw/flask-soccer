@@ -7,3 +7,4 @@ tests/*.db
 config.env
 .coverage
 *.egg-info
+auth_token
