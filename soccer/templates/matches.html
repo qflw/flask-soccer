@@ -33,7 +33,7 @@
             {% endif %}
 
             {% if g.user %}
-                <td class="c3"><input type="text" maxlength="5" value="0" onchange="submitScore(this)" id="{{ match.id }}" name="bet"/></td>
+                <td class="c3"><input type="text" maxlength="5" value="{{getBet(match, g.user).bet}}" onchange="submitScore(this)" id="{{ match.id }}" name="bet"/></td>
                 <td class="c3">0</td>
             {% endif %}
         </tr>

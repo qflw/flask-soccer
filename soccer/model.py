@@ -259,4 +259,5 @@ def init_app(app):
 
 
 def getBet(match, user):
-    return Bet.query.filter_by(match_id=match.id, user_id=user.id).first()
+    print("fetching bet for user {} and match {}".format(user.id, match["id"]))
+    return Bet.query.filter_by(match_id=match["id"], user_id=user.id).first()
